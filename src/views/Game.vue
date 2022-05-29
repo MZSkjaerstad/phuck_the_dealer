@@ -442,6 +442,7 @@ export default {
       .game__discard-button {
          width: 12rem;
          height: 12rem;
+         right: 5%;
          border-radius: 20px;
          font-size: 46px;
       }
