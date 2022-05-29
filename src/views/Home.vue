@@ -1,5 +1,6 @@
 <template>
    <section class="home">
+      <img class="game__logo" src="/vector/game_logo.svg" alt="">
       <router-link :to="'/game'">
          <button class="home__button">New Game</button>
       </router-link>
@@ -21,8 +22,14 @@ export default {
       width: 100vw;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+   }
+
+   .game__logo {
+      width: auto;
+      height: 50%;
    }
 
    .home__button {
