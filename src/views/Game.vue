@@ -288,6 +288,7 @@ export default {
       justify-content: center;
       align-items: center;
       z-index: 10;
+      padding: var(--spacing-medium);
    }
 
    /* Drunk-o-meter */
@@ -301,6 +302,10 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+   }
+
+   .game__message {
+      text-align: center;
    }
 
    .game__card {
@@ -424,4 +429,22 @@ export default {
       box-shadow: 0 0.2rem 1rem var(--dark-color);
       border-radius: 5px;
    }
+
+   @media screen and (max-device-width: 767px) {
+      .game__card {
+         height: 46rem;
+      }
+
+      .game__input {
+         width: 9rem;
+      }
+
+      .game__discard-button {
+         width: 12rem;
+         height: 12rem;
+         border-radius: 20px;
+         font-size: 46px;
+      }
+   }
+
 </style>

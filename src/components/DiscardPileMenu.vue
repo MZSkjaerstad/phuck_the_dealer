@@ -66,7 +66,7 @@ export default {
    .menu {
       position: absolute;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       padding: 16rem 4rem;
       display: flex;
       justify-content: center;
@@ -137,5 +137,19 @@ export default {
       top: 43%;
       left: 58%;
       position: absolute;
+   }
+
+   @media screen and (max-device-width: 767px) {
+
+      .menu__card-image {
+         height: 18vh;
+      }
+
+      .menu__discard-button {
+         width: 12rem;
+         height: 12rem;
+         border-radius: 20px;
+         font-size: 46px;
+      }
    }
 </style>

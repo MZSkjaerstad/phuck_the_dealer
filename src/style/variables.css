@@ -19,3 +19,11 @@
 
    --border-style: solid 1px;
 }
+
+@media screen and (max-device-width: 767px) {
+   :root {
+      --font-size-body: 36px;
+      --font-size-input: 1.4em;
+      --spacing-small: 35px;
+   }
+}

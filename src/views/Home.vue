@@ -43,4 +43,9 @@ export default {
       border-radius: 5px;
    }
 
+   @media screen and (max-device-width: 767px) {
+      .game__logo {
+         height: 40%;
+      }
+   }
 </style>
