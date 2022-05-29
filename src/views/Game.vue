@@ -4,48 +4,68 @@
          <div class="game__drunk-o-meter">Computers drunk-o-meter  {{game.drunkOMeter}} / 10</div>
 
          <div class="game__finished" v-if="switches.roundFinished === true" >
-            <div> {{ game.result }} </div>
+            <h2 class="game__message"> {{ game.result }} </h2>
 
-            <img :src="game.currentCard.image" alt="">
+            <img class="game__card" :src="game.currentCard.image" alt="">
+            
+            <p class="game_phase-tracker">Next player..</p>
 
-            <button @click="fetchNewCard">New card</button>
+            <button class="game__new-card" @click="fetchNewCard">New card</button>
          </div>
 
          <div class="game__round" v-if="switches.roundFinished === false">
             <div class="game__ongoing" v-if="switches.lastRound === false">
-               <div>Guess the value of this card</div>
-
-               <div>First round</div>
+               <h2 class="game__message">Guess the value of this card</h2>
                
-               <img class="game__card-back" src="/images/card_back.png" alt="">
+               <img class="game__card" src="/images/card_back.png" alt="">
 
-               <input class="game__input" type="number" placeholder="input" v-model="game.input">
+               <p class="game_phase-tracker">First round</p>
 
-               <button @click="guessValue">Guess</button>
+               <div class="game__controller">
+                  <div class="game__input-container">
+                     <button class="game__remove-value" @click="game.input -= 1">-</button>
+
+                     <input class="game__input" type="number" placeholder="input" v-model="game.input">
+
+                     <button class="game__add-value" @click="game.input += 1">+</button>
+                  </div>
+
+                  <button class="game__guess" @click="guessValue">Guess</button>
+               </div>
             </div>
 
             <div class="game__ongoing" v-if="switches.lastRound === true">
-               <div> {{ game.result }} </div>
+               <h2 class="game__message"> {{ game.result }} </h2>
 
-               <div>Last round</div>
+               <img class="game__card" src="/images/card_back.png" alt="">
 
-               <img class="game__card-back" src="/images/card_back.png" alt="">
+               <div class="game_phase-tracker">Last round</div>
 
-               <input class="game__input" type="number" placeholder="input" v-model="game.input">
+               <div class="game__controller">
+                  <div class="game__input-container">
+                     <button class="game__remove-value" @click="game.input -= 1">-</button>
 
-               <button @click="guessValue">Guess</button>
+                     <input class="game__input" type="number" placeholder="input" v-model="game.input">
+
+                     <button class="game__add-value" @click="game.input += 1">+</button>
+                  </div>
+
+                  <button class="game__guess" @click="guessValue">Guess</button>
+               </div>
             </div>
          </div>
 
-         <div class="game__discard-button" @click="toggleMenu">
-            <div> {{ discardPile.length }} </div>
-         </div>
+         <button class="game__discard-button" @click="toggleMenu">
+            <img class="game__discard-icon" src="/vector/discard_pile_icon.svg" alt="">
+
+            <p class="game__discard-length"> {{ discardPile.length }} </p>
+         </button>
       </section>
 
-      <section v-if="switches.gameFinished === true">
-         FINISHED!
+      <section class="game__finished" v-if="switches.gameFinished === true">
+         <h2>FINISHED!</h2>
          <router-link :to="'/'">
-            <button>Back to start</button>
+            <button class="game__to-start">Back to start</button>
          </router-link>
       </section>
 
@@ -111,6 +131,8 @@ export default {
          if (this.game.currentCard !== undefined) {
             this.discardPile.push(this.game.currentCard);
             console.log('[SUCCESS] Moved old card into discardPile =', this.discardPile)
+
+            this.checkIfFinished()
          }
 
          /* Fetch new card */
@@ -181,12 +203,12 @@ export default {
             console.log('[LAST ROUND]')
             /* If input is higher */
             if (this.game.input > this.game.cardValue) {
-               this.game.result =  `Wrong! Drink ${this.game.input - this.game.cardValue}.`;
+               this.game.result =  `Wrong! Drink ${this.game.input - this.game.cardValue}`;
             }
 
             /* If input is Lower */
             if (this.game.input < this.game.cardValue) {
-               this.game.result = `Wrong! Drink ${this.game.cardValue - this.game.input}.`;
+               this.game.result = `Wrong! Drink ${this.game.cardValue - this.game.input}`;
             }
 
             /* If input is Correct */
@@ -197,36 +219,34 @@ export default {
 
          this.switches.roundFinished = !this.switches.roundFinished;
          }
-
-         this.checkIfFinished()
       },
 
       drunkOMeterResponse() {
          let drunkOMeterResponse = undefined;
 
          if (this.game.drunkOMeter === 1) {
-            drunkOMeterResponse = 'correct! Computer takes a sip';
+            drunkOMeterResponse = 'Correct! Computer takes a sip';
 
          } else if (this.game.drunkOMeter === 2) {
-            drunkOMeterResponse = 'correct again! Computer takes another sip';
+            drunkOMeterResponse = 'Correct again! Computer takes another sip';
 
          } else if (this.game.drunkOMeter === 3) {
-            drunkOMeterResponse = 'correct! This drink is delish!';
+            drunkOMeterResponse = 'Correct! This drink is delish!';
 
          } else if (this.game.drunkOMeter === 4) {
-            drunkOMeterResponse = 'correct once again! Computer is feeling the tingles hehe';
+            drunkOMeterResponse = 'Correct once again! Computer is beginning to feel tingles..';
 
          } else if (this.game.drunkOMeter === 5) {
-            drunkOMeterResponse = 'correct.. Damn it! One more sip for computer';
+            drunkOMeterResponse = 'Correct.. Damn it! One more sip for computer';
 
          } else if (this.game.drunkOMeter === 6) {
-            drunkOMeterResponse = '*hic*.. c-correct.';
+            drunkOMeterResponse = '*Hic*.. C-correct.';
 
          } else if (this.game.drunkOMeter === 7) {
             drunkOMeterResponse = '.. you kn..*hic*..ow computer looves you man!';
 
          } else if (this.game.drunkOMeter === 8) {
-            drunkOMeterResponse = 'Heyy hoo, down the hatch it goooess trallalla!';
+            drunkOMeterResponse = 'Heyy hoo, down the.. *hic* ..hatch it goooess..';
 
          } else if (this.game.drunkOMeter === 9) {
             drunkOMeterResponse = '1110001001 110011001010 0101..';
@@ -239,11 +259,7 @@ export default {
       },
 
       checkIfFinished() {
-         if (this.game.drunkOMeter === 10) {
-            this.switches.gameFinished = !this.switches.gameFinished;
-         }
-
-         if (this.discardPile.length === 52) {
+         if (this.game.drunkOMeter === 10 || this.discardPile.length === 52) {
             this.switches.gameFinished = !this.switches.gameFinished;
          }
       },
@@ -274,21 +290,34 @@ export default {
       z-index: 10;
    }
 
+   /* Drunk-o-meter */
    .game__drunk-o-meter {
       position: absolute;
       top: 5%
    }
 
+   /* Game */
    .game__round {
       display: flex;
       flex-direction: column;
       align-items: center;
    }
 
-   .game__card-back {
-      height: 20rem;
+   .game__card {
+      height: 18rem;
+      margin: var(--spacing-medium) 0;
+      border-radius: 5% 5% 5% 5%;
+      box-shadow: 0 0.2rem 1rem var(--dark-color);
    }
 
+   .game_phase-tracker {
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      padding-bottom: var(--spacing-small);
+   }
+
+   /* Phases */
    .game__ongoing {
       display: flex;
       flex-direction: column;
@@ -301,16 +330,98 @@ export default {
       align-items: center;
    }
 
-   .game__input {
-      text-align: center;
+   /* Controller */
+   .game__controller {
+      box-shadow: 0 0.2rem 1rem var(--dark-color);
+      border-radius: 30% 30% 30% 30%;
    }
 
+   .game__input {
+      width: 3rem;
+      text-align: center;
+      color: var(--primary-color);
+      font-size: var(--font-size-input);
+      background: var(--highlight-color);
+      padding: var(--spacing-padding);
+      border: none;
+   }
+
+   .game__remove-value {
+      font-size: var(--font-size-input);
+      font-weight: 600;
+      padding: var(--spacing-padding) var(--spacing-small);
+      border-right: var(--border-style) var(--primary-color);
+      border-radius: 30% 0 0 0;
+   }
+
+   .game__add-value {
+      font-size: var(--font-size-input);
+      font-weight: 600;
+      padding: var(--spacing-padding) var(--spacing-small);
+      border-left: var(--border-style) var(--primary-color);
+      border-radius: 0 30% 0 0;
+   }
+
+   .game__guess {
+      width: 100%;
+      font-size: var(--font-size-input);
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      padding: var(--spacing-padding) var(--spacing-small);
+      border-top: var(--border-style) var(--primary-color);
+      border-radius: 0 0 30% 30%;
+   }
+
+   .game__new-card {
+      font-size: var(--font-size-input);
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      padding: var(--spacing-padding) var(--spacing-small);
+      border-radius: 15% 15% 15% 15%;
+      box-shadow: 0 0.2rem 1rem var(--dark-color);
+   }
+
+   /* Discard */
    .game__discard-button {
+      widows: 4rem;
+      height: 4rem;
       position: absolute;
-      background: lightgray;
       bottom: 5%;
       border: solid black 1px;
       border-radius: 5px;
-      padding: 0.6rem 1rem;
+      padding: 0.5rem 1rem;
+   }
+
+   .game__discard-icon {
+      height: 90%;
+   }
+
+   .game__discard-length {
+      color: var(--primary-color);
+      transform: translateX(-50%);
+      top: 43%;
+      left: 58%;
+      position: absolute;
+   }
+
+   /* Finished */
+
+   .game__finished {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+   }
+
+   .game__to-start {
+      font-size: var(--font-size-input);
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      margin-top: var(--spacing-medium);
+      padding: var(--spacing-padding) var(--spacing-small);
+      box-shadow: 0 0.2rem 1rem var(--dark-color);
+      border-radius: 5px;
    }
 </style>

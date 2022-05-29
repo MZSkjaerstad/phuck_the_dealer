@@ -1,7 +1,21 @@
 :root {
-   --background: white;
-   --color: black;
+   --primary-color: #5C164E;
+   --secondary-color: #9B287B;
+   --highlight-color: #E2FCEF;
+   --light-color: #ffffff;
+   --dark-color: #000000;
 
    --font-family: "roboto";
-   --font-size: 12px;
+
+   --font-size-body: 16px; /*ROOT*/
+   --font-size-input: 1.2em;
+   --font-size-subtitle: 1.8em;
+   --font-size-title: 4em;
+
+   --spacing-padding: 0.3em;
+   --spacing-small: 15px; /*ROOT*/
+   --spacing-medium: 2em;
+   --spacing-large: 4.5em;
+
+   --border-style: solid 1px;
 }

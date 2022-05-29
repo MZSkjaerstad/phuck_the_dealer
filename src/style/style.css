@@ -1,5 +1,37 @@
 body {
-   background: var(--background);
+   background: var(--primary-color);
+   color: var(--highlight-color);
+   font-size: var(--font-size-body);
    font-family: var(--font-family);
 }
 
+h1 {
+   font-size: var(--font-size-title);
+   font-weight: 600;
+   font-style: italic;
+   text-transform: uppercase;
+}
+
+h2 {
+   font-size: var(--font-size-subtitle);
+   font-weight: 600;
+   font-style: italic;
+   text-transform: uppercase;
+}
+
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+}
+
+button {
+   color: var(--highlight-color);
+   background: var(--secondary-color);
+   border: none;
+   transition: 0.2s;
+}
+
+button:hover {
+   color: var(--secondary-color);
+   background: var(--highlight-color);
+   transition: 0.2s;
+}
