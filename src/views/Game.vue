@@ -8,7 +8,7 @@
 
             <img class="game__card" :src="game.currentCard.image" alt="">
             
-            <p class="game_phase-tracker">Next player..</p>
+            <p class="game_phase-tracker">round finished</p>
 
             <button class="game__new-card" @click="fetchNewCard">New card</button>
          </div>
@@ -19,7 +19,7 @@
                
                <img class="game__card" src="/images/card_back.png" alt="">
 
-               <p class="game_phase-tracker">First round</p>
+               <p class="game_phase-tracker">number 7 is smart</p>
 
                <div class="game__controller">
                   <div class="game__input-container">
@@ -39,7 +39,7 @@
 
                <img class="game__card" src="/images/card_back.png" alt="">
 
-               <div class="game_phase-tracker">Last round</div>
+               <div class="game_phase-tracker">Guess again</div>
 
                <div class="game__controller">
                   <div class="game__input-container">
@@ -118,17 +118,37 @@ export default {
    methods: {
       async fetchDeck() {
          const url = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
-         const res = await fetch(url);
-         const result = await res.json();
+         const response = await fetch(url);
+         try {
+            await this.handleDeckFetch(response);
+         } catch(error) {
+            this.error = error.message;
+         }
+      },
 
-         this.deck.id = result.deck_id;
-         this.deck.remaining = result.remaining;
-         console.log ('[SUCCESS] New deck fetched =', result);
+      async handleDeckFetch(response) {
+         if (response.status >= 200 && response.status < 300) {
+            const result = await response.json();
+            this.deck.id = result.deck_id;
+            this.deck.remaining = result.remaining;
+            console.log ('[SUCCESS] New deck fetched =', result);
+         } else {
+            if(response.status === 404) {
+               throw new Error('Url ikke funnet.');
+               }
+               if(response.status === 401) {
+                  throw new Error('Ikke authorisert.');
+               }
+               if(response.status > 500) {
+                  throw new Error('Server error.');
+               }
+            throw new Error('Her gikk noe galt.');
+         }
       },
 
       async fetchNewCard() {
          /* Push & clear previous card */
-         if (this.game.currentCard !== undefined) {
+         if (this.game.currentCard != undefined) {
             this.discardPile.push(this.game.currentCard);
             console.log('[SUCCESS] Moved old card into discardPile =', this.discardPile)
 
@@ -137,19 +157,40 @@ export default {
 
          /* Fetch new card */
          const url = `https://deckofcardsapi.com/api/deck/${this.deck.id}/draw/?count=1`;
-         const res = await fetch(url);
-         const result = await res.json();
+         const response = await fetch(url);
+         try {
+            await this.handleCardFetch(response)
+         } catch(error) {
+            this.error = error.message;
+         }
+      },
 
-         this.game.currentCard = result.cards[0];
-         this.game.cardValue = this.filterValue()
-         this.deck.remaining = result.remaining;
+      async handleCardFetch(response) {
+         if (response.status >= 200 && response.status < 300) {
+            const result = await response.json();
 
-         /* Toggle switches */
-         this.switches.lastRound = !this.switches.lastRound
-         this.switches.roundFinished = !this.switches.roundFinished;
+            this.game.currentCard = result.cards[0];
+            this.game.cardValue = this.filterValue()
+            this.deck.remaining = result.remaining;
 
-         console.log('[SUCCESS] Updated currentCard with new card =', this.game.currentCard)
-         console.log('[NOTE]', this.deck.remaining, 'cards remaining...')
+            /* Toggle switches */
+            this.switches.lastRound = !this.switches.lastRound
+            this.switches.roundFinished = !this.switches.roundFinished;
+
+            console.log('[SUCCESS] Updated currentCard with new card =', this.game.currentCard)
+            console.log('[NOTE]', this.deck.remaining, 'cards remaining...')
+         } else {
+            if(response.status === 404) {
+               throw new Error('Url ikke funnet.');
+               }
+               if(response.status === 401) {
+                  throw new Error('Ikke authorisert.');
+               }
+               if(response.status > 500) {
+                  throw new Error('Server error.');
+               }
+            throw new Error('Her gikk noe galt.');
+         }
       },
 
       filterValue() {
@@ -447,5 +488,4 @@ export default {
          font-size: 46px;
       }
    }
-
 </style>
