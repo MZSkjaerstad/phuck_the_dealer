@@ -28,11 +28,11 @@
 
                <div class="game__controller">
                   <div class="game__input-container">
-                     <button class="game__remove-value" @click="game.input -= 1">-</button>
+                     <button class="game__remove-value" @click="removeValue">-</button>
 
-                     <input class="game__input" type="number" placeholder="input" v-model="game.input">
+                     <input class="game__input" type="number" placeholder="input" min="1" max="13" v-model="game.input">
 
-                     <button class="game__add-value" @click="game.input += 1">+</button>
+                     <button class="game__add-value" @click="addValue">+</button>
                   </div>
 
                   <button class="game__guess" @click="guessValue">Guess</button>
@@ -51,7 +51,7 @@
                   <div class="game__input-container">
                      <button class="game__remove-value" @click="game.input -= 1">-</button>
 
-                     <input class="game__input" type="number" placeholder="input" v-model="game.input">
+                     <input class="game__input" type="number" placeholder="input" min="1" max="13" v-model="game.input">
 
                      <button class="game__add-value" @click="game.input += 1">+</button>
                   </div>
@@ -121,6 +121,11 @@ export default {
       this.fetchDeck()
          .then(this.fetchNewCard)
          .catch(err => console.log(error))
+
+   },
+
+   mounted() {
+      console.log(this.$route)
    },
    
    methods: {
@@ -220,6 +225,18 @@ export default {
          return initialValue;
       },
 
+      addValue() {
+         if (this.game.input != 13) {
+            this.game.input += 1;
+         }
+      },
+
+      removeValue() {
+         if (this.game.input != 1) {
+            this.game.input -= 1;
+         }
+      },
+
       guessValue() {
          /* [ FIRST ROUND ] */
          if (this.switches.lastRound === false) {
@@ -279,10 +296,10 @@ export default {
             drunkOMeterResponse = 'Correct again! Computer takes another sip';
 
          } else if (this.game.drunkOMeter === 3) {
-            drunkOMeterResponse = 'Correct! This drink is delish!';
+            drunkOMeterResponse = 'Correct! Computer glugs a huge one!';
 
          } else if (this.game.drunkOMeter === 4) {
-            drunkOMeterResponse = 'Correct once again! Computer is beginning to feel tingles..';
+            drunkOMeterResponse = 'Correct once again! Computer is beginning to feel the tingles..';
 
          } else if (this.game.drunkOMeter === 5) {
             drunkOMeterResponse = 'Correct.. Damn it! One more sip for computer';
@@ -291,16 +308,16 @@ export default {
             drunkOMeterResponse = '*Hic*.. C-correct.';
 
          } else if (this.game.drunkOMeter === 7) {
-            drunkOMeterResponse = '.. you kn..*hic*..ow computer looves you man!';
+            drunkOMeterResponse = 'Again?! ..you tart piece of *hic*-ory!';
 
          } else if (this.game.drunkOMeter === 8) {
             drunkOMeterResponse = 'Heyy hoo, down the.. *hic* ..hatch it goooess..';
 
          } else if (this.game.drunkOMeter === 9) {
-            drunkOMeterResponse = '1110001001 110011001010 0101..';
+            drunkOMeterResponse = 'zzzZZzzZZzZzZZzzz..';
 
          } else {
-            drunkOMeterResponse = 'zzzzzzzzzzzzzz...';
+            drunkOMeterResponse = '1110001001 110011001010 0101..';
          }
 
          return drunkOMeterResponse;

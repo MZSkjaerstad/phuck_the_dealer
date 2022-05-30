@@ -1,5 +1,5 @@
 <template>
-    <RouterView :key="this.$route.fullPath" />
+    <RouterView :key="$route.fullPath" />
 </template>
 
 <style>
