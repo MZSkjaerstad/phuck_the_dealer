@@ -49,11 +49,11 @@
 
                <div class="game__controller">
                   <div class="game__input-container">
-                     <button class="game__remove-value" @click="game.input -= 1">-</button>
+                     <button class="game__remove-value" @click="removeValue">-</button>
 
                      <input class="game__input" type="number" placeholder="input" min="1" max="13" v-model="game.input">
 
-                     <button class="game__add-value" @click="game.input += 1">+</button>
+                     <button class="game__add-value" @click="addValue">+</button>
                   </div>
 
                   <button class="game__guess" @click="guessValue">Guess</button>
