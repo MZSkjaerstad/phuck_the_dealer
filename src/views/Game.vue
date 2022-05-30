@@ -1,8 +1,10 @@
 <template>
    <main class="game">
+      <!-- Game ongoing -->
       <section class="game__round" v-if="switches.gameFinished === false">
          <div class="game__drunk-o-meter">Computers drunk-o-meter  {{game.drunkOMeter}} / 10</div>
-
+         
+         <!-- Round finished -->
          <div class="game__finished" v-if="switches.roundFinished === true" >
             <h2 class="game__message"> {{ game.result }} </h2>
 
@@ -13,7 +15,10 @@
             <button class="game__new-card" @click="fetchNewCard">New card</button>
          </div>
 
+         <!-- Round ongoing -->
          <div class="game__round" v-if="switches.roundFinished === false">
+
+            <!-- First round -->
             <div class="game__ongoing" v-if="switches.lastRound === false">
                <h2 class="game__message">Guess the value of this card</h2>
                
@@ -34,6 +39,7 @@
                </div>
             </div>
 
+            <!-- Last round -->
             <div class="game__ongoing" v-if="switches.lastRound === true">
                <h2 class="game__message"> {{ game.result }} </h2>
 
@@ -55,6 +61,7 @@
             </div>
          </div>
 
+         <!-- Discardpile -->
          <button class="game__discard-button" @click="toggleMenu">
             <img class="game__discard-icon" src="/vector/discard_pile_icon.svg" alt="">
 
@@ -62,6 +69,7 @@
          </button>
       </section>
 
+      <!-- Game finished -->
       <section class="game__finished" v-if="switches.gameFinished === true">
          <h2>FINISHED!</h2>
          <router-link :to="'/'">
@@ -168,7 +176,6 @@ export default {
       async handleCardFetch(response) {
          if (response.status >= 200 && response.status < 300) {
             const result = await response.json();
-
             this.game.currentCard = result.cards[0];
             this.game.cardValue = this.filterValue()
             this.deck.remaining = result.remaining;

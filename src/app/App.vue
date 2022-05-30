@@ -1,15 +1,6 @@
 <template>
-    <RouterView />
+    <RouterView :key="this.$route.fullPath" />
 </template>
-
-<script>
-    //import Header from '../components/Header.vue';
-    export default {
-        components: {
-          
-        }
-    }
-</script>
 
 <style>
     @import '../style/reset.css';
